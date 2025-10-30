@@ -12,10 +12,8 @@ function TracesDemo() {
     // Automatic span - perfect for simple, contained operations
     // The span automatically ends when this callback completes
     LDObserve.startSpan('api.fetch.simple', async (span) => {
-      span.setAttributes({
-        'operation.type': 'simple_fetch',
-        'timestamp': new Date().toISOString()
-      });
+      span.setAttribute('operation.type', 'simple_fetch');
+      span.setAttribute('timestamp', new Date().toISOString());
       
       // Simulate API call with delay
       await new Promise(resolve => setTimeout(resolve, 800));
@@ -27,10 +25,8 @@ function TracesDemo() {
         userId: 1
       };
       
-      span.setAttributes({
-        'response.status': 200,
-        'response.title': simulatedData.title
-      });
+      span.setAttribute('response.status', 200);
+      span.setAttribute('response.title', simulatedData.title);
       
       setAutoResult(`✓ Fetched: "${simulatedData.title}"`);
       // Span ends automatically here when callback completes
@@ -46,38 +42,30 @@ function TracesDemo() {
     // Manual span - you control when the span ends by calling span.end()
     LDObserve.startManualSpan('workflow.multi_step', async (span) => {
       try {
-        span.setAttributes({
-          'operation.type': 'multi_step_workflow',
-          'workflow.total_steps': 3
-        });
+        span.setAttribute('operation.type', 'multi_step_workflow');
+        span.setAttribute('workflow.total_steps', 3);
         
         // Step 1: Simulate first operation
         setManualProgress('Step 1/3: Processing first operation...');
         await new Promise(resolve => setTimeout(resolve, 600));
         completedSteps = 1;
-        span.setAttributes({
-          'step.1.completed': true,
-          'step.1.timestamp': new Date().toISOString()
-        });
+        span.setAttribute('step.1.completed', true);
+        span.setAttribute('step.1.timestamp', new Date().toISOString());
         
         // Step 2: Simulate second operation
         setManualProgress('Step 2/3: Processing second operation...');
         await new Promise(resolve => setTimeout(resolve, 600));
         completedSteps = 2;
-        span.setAttributes({
-          'step.2.completed': true,
-          'step.2.timestamp': new Date().toISOString()
-        });
+        span.setAttribute('step.2.completed', true);
+        span.setAttribute('step.2.timestamp', new Date().toISOString());
         
         // Step 3: Simulate final operation
         setManualProgress('Step 3/3: Processing final operation...');
         await new Promise(resolve => setTimeout(resolve, 600));
         completedSteps = 3;
-        span.setAttributes({
-          'step.3.completed': true,
-          'step.3.timestamp': new Date().toISOString(),
-          'workflow.success': true
-        });
+        span.setAttribute('step.3.completed', true);
+        span.setAttribute('step.3.timestamp', new Date().toISOString());
+        span.setAttribute('workflow.success', true);
         
         span.setStatus({ code: 'OK' });
         setManualResult(`✓ Completed ${completedSteps}/3 steps!`);
@@ -103,7 +91,7 @@ function TracesDemo() {
 
   return (
     <div className="card">
-      <h2>🔍 Distributed Traces Demo</h2>
+      <h2>🔍 Traces Demo</h2>
       <p>
         Create trace spans to track operations. Compare automatic vs. manual span management
         with real examples.
@@ -136,34 +124,72 @@ function TracesDemo() {
         )}
         
         <details style={{ marginTop: '15px', fontSize: '14px' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#555' }}>
-            View Code
+          <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#555', marginBottom: '10px' }}>
+            View API Usage & Examples
           </summary>
-          <pre style={{ 
-            marginTop: '10px',
-            padding: '12px',
-            backgroundColor: '#f5f5f5',
-            borderRadius: '4px',
-            overflow: 'auto',
-            fontSize: '13px'
+          
+          <div style={{ 
+            marginTop: '15px', 
+            padding: '15px', 
+            backgroundColor: '#f8f9fa',
+            borderRadius: '8px',
+            fontSize: '14px'
           }}>
+            <strong>API Usage:</strong>
+            <pre style={{ 
+              marginTop: '10px',
+              padding: '12px',
+              backgroundColor: '#fff',
+              borderRadius: '4px',
+              border: '1px solid #ddd',
+              overflow: 'auto'
+            }}>
+{`LDObserve.startSpan('operation.name', async (span) => {
+  span.setAttribute('key', 'value');
+  // Your operation here
+  // Span ends automatically when callback completes
+});`}
+            </pre>
+            <p style={{ marginTop: '10px', color: '#666' }}>
+              <strong>Parameters:</strong>
+            </p>
+            <ul style={{ marginLeft: '20px', color: '#666', lineHeight: '1.8' }}>
+              <li><strong>name</strong> (string): Name of the span operation</li>
+              <li><strong>callback</strong> (function): Async function that receives the span object</li>
+            </ul>
+          </div>
+
+          <div style={{ 
+            marginTop: '15px', 
+            padding: '15px', 
+            backgroundColor: '#e3f2fd',
+            borderRadius: '8px',
+            fontSize: '14px',
+            borderLeft: '4px solid #2196f3'
+          }}>
+            <strong>💡 Example Implementation:</strong>
+            <pre style={{ 
+              marginTop: '10px',
+              padding: '12px',
+              backgroundColor: '#fff',
+              borderRadius: '4px',
+              border: '1px solid #ddd',
+              overflow: 'auto'
+            }}>
 {`// Span ends automatically when callback completes
 LDObserve.startSpan('api.fetch.simple', async (span) => {
-  span.setAttributes({
-    'operation.type': 'simple_fetch'
-  });
+  span.setAttribute('operation.type', 'simple_fetch');
   
   // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 800));
   
-  span.setAttributes({
-    'response.status': 200,
-    'response.title': 'Data loaded successfully'
-  });
+  span.setAttribute('response.status', 200);
+  span.setAttribute('response.title', 'Data loaded successfully');
   
   // Span ends here automatically
 });`}
-          </pre>
+            </pre>
+          </div>
         </details>
       </div>
 
@@ -211,38 +237,85 @@ LDObserve.startSpan('api.fetch.simple', async (span) => {
         )}
         
         <details style={{ marginTop: '15px', fontSize: '14px' }}>
-          <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#555' }}>
-            View Code
+          <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#555', marginBottom: '10px' }}>
+            View API Usage & Examples
           </summary>
-          <pre style={{ 
-            marginTop: '10px',
-            padding: '12px',
-            backgroundColor: '#f5f5f5',
-            borderRadius: '4px',
-            overflow: 'auto',
-            fontSize: '13px'
+          
+          <div style={{ 
+            marginTop: '15px', 
+            padding: '15px', 
+            backgroundColor: '#f8f9fa',
+            borderRadius: '8px',
+            fontSize: '14px'
           }}>
+            <strong>API Usage:</strong>
+            <pre style={{ 
+              marginTop: '10px',
+              padding: '12px',
+              backgroundColor: '#fff',
+              borderRadius: '4px',
+              border: '1px solid #ddd',
+              overflow: 'auto'
+            }}>
+{`LDObserve.startManualSpan('operation.name', async (span) => {
+  try {
+    span.setAttribute('key', 'value');
+    // Your operation here
+  } finally {
+    span.end(); // MUST call this!
+  }
+});`}
+            </pre>
+            <p style={{ marginTop: '10px', color: '#666' }}>
+              <strong>Parameters:</strong>
+            </p>
+            <ul style={{ marginLeft: '20px', color: '#666', lineHeight: '1.8' }}>
+              <li><strong>name</strong> (string): Name of the span operation</li>
+              <li><strong>callback</strong> (function): Async function that receives the span object</li>
+            </ul>
+            <p style={{ marginTop: '10px', color: '#666' }}>
+              <strong>Important:</strong> You must explicitly call <code>span.end()</code> in a finally block.
+            </p>
+          </div>
+
+          <div style={{ 
+            marginTop: '15px', 
+            padding: '15px', 
+            backgroundColor: '#e3f2fd',
+            borderRadius: '8px',
+            fontSize: '14px',
+            borderLeft: '4px solid #2196f3'
+          }}>
+            <strong>💡 Example Implementation:</strong>
+            <pre style={{ 
+              marginTop: '10px',
+              padding: '12px',
+              backgroundColor: '#fff',
+              borderRadius: '4px',
+              border: '1px solid #ddd',
+              overflow: 'auto'
+            }}>
 {`// Manual span - YOU must call span.end()
 LDObserve.startManualSpan('workflow.multi_step', async (span) => {
   let completedSteps = 0;
   
   try {
-    span.setAttributes({ 'workflow.total_steps': 3 });
+    span.setAttribute('workflow.total_steps', 3);
     
     // Step 1
     await new Promise(resolve => setTimeout(resolve, 600));
     completedSteps = 1;
-    span.setAttributes({ 'step.1.completed': true });
+    span.setAttribute('step.1.completed', true);
     
     // Step 2
     await new Promise(resolve => setTimeout(resolve, 600));
     completedSteps = 2;
-    span.setAttributes({ 'step.2.completed': true });
+    span.setAttribute('step.2.completed', true);
     
     // Step 3
     await new Promise(resolve => setTimeout(resolve, 600));
     completedSteps = 3;
-    span.setAttributes({ 'step.3.completed': true });
+    span.setAttribute('step.3.completed', true);
     
     span.setStatus({ code: 'OK' });
     // Result: Completed 3/3 steps!
@@ -257,7 +330,8 @@ LDObserve.startManualSpan('workflow.multi_step', async (span) => {
     span.end(); // MUST call this!
   }
 });`}
-          </pre>
+            </pre>
+          </div>
         </details>
       </div>
 
@@ -303,7 +377,7 @@ LDObserve.startManualSpan('workflow.multi_step', async (span) => {
       }}>
         <strong>💡 Span Methods:</strong>
         <ul style={{ marginTop: '10px', marginLeft: '20px', lineHeight: '1.8' }}>
-          <li><code>span.setAttributes(obj)</code> - Add custom metadata to the span</li>
+          <li><code>span.setAttribute(key, value)</code> - Add custom metadata to the span</li>
           <li><code>span.setStatus(&#123;code: 'OK'|'ERROR'&#125;)</code> - Mark span status</li>
           <li><code>span.recordException(error)</code> - Record an error within the span</li>
           <li><code>span.end()</code> - End the span (manual spans only)</li>

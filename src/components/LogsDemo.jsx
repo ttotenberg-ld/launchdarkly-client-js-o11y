@@ -62,49 +62,55 @@ function LogsDemo() {
         </div>
       </div>
 
-      <div style={{ 
-        marginTop: '20px', 
-        padding: '15px', 
-        backgroundColor: '#f8f9fa',
-        borderRadius: '8px',
-        fontSize: '14px'
-      }}>
-        <strong>API Usage:</strong>
-        <pre style={{ 
-          marginTop: '10px',
-          padding: '12px',
-          backgroundColor: '#fff',
-          borderRadius: '4px',
-          border: '1px solid #ddd',
-          overflow: 'auto'
+      <details style={{ marginTop: '20px', fontSize: '14px' }}>
+        <summary style={{ cursor: 'pointer', fontWeight: '600', color: '#555', marginBottom: '10px' }}>
+          View API Usage & Examples
+        </summary>
+        
+        <div style={{ 
+          marginTop: '15px', 
+          padding: '15px', 
+          backgroundColor: '#f8f9fa',
+          borderRadius: '8px',
+          fontSize: '14px'
         }}>
+          <strong>API Usage:</strong>
+          <pre style={{ 
+            marginTop: '10px',
+            padding: '12px',
+            backgroundColor: '#fff',
+            borderRadius: '4px',
+            border: '1px solid #ddd',
+            overflow: 'auto'
+          }}>
 {`LDObserve.recordLog('Example log message', Severity.DEBUG);`}
-        </pre>
-        <p style={{ marginTop: '10px', color: '#666' }}>
-          <strong>Parameters:</strong>
-        </p>
-        <ul style={{ marginLeft: '20px', color: '#666', lineHeight: '1.8' }}>
-          <li><strong>message</strong> (string): The log message to record</li>
-          <li><strong>severity</strong>: Log level - 'debug', 'info', 'warn', or 'error'</li>
-        </ul>
-      </div>
+          </pre>
+          <p style={{ marginTop: '10px', color: '#666' }}>
+            <strong>Parameters:</strong>
+          </p>
+          <ul style={{ marginLeft: '20px', color: '#666', lineHeight: '1.8' }}>
+            <li><strong>message</strong> (string): The log message to record</li>
+            <li><strong>severity</strong>: Log level - 'debug', 'info', 'warn', or 'error'</li>
+          </ul>
+        </div>
 
-      <div style={{ 
-        marginTop: '20px', 
-        padding: '15px', 
-        backgroundColor: '#e3f2fd',
-        borderRadius: '8px',
-        fontSize: '14px',
-        borderLeft: '4px solid #2196f3'
-      }}>
-        <strong>💡 When to use each severity level:</strong>
-        <ul style={{ marginTop: '10px', marginLeft: '20px', lineHeight: '1.8' }}>
-          <li><strong>debug:</strong> Detailed diagnostic information for troubleshooting</li>
-          <li><strong>info:</strong> General informational messages about application flow</li>
-          <li><strong>warn:</strong> Warning messages for potentially harmful situations</li>
-          <li><strong>error:</strong> Error events that might still allow the application to continue</li>
-        </ul>
-      </div>
+        <div style={{ 
+          marginTop: '15px', 
+          padding: '15px', 
+          backgroundColor: '#e3f2fd',
+          borderRadius: '8px',
+          fontSize: '14px',
+          borderLeft: '4px solid #2196f3'
+        }}>
+          <strong>💡 When to use each severity level:</strong>
+          <ul style={{ marginTop: '10px', marginLeft: '20px', lineHeight: '1.8' }}>
+            <li><strong>debug:</strong> Detailed diagnostic information for troubleshooting</li>
+            <li><strong>info:</strong> General informational messages about application flow</li>
+            <li><strong>warn:</strong> Warning messages for potentially harmful situations</li>
+            <li><strong>error:</strong> Error events that might still allow the application to continue</li>
+          </ul>
+        </div>
+      </details>
     </div>
   );
 }
