@@ -1,23 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { asyncWithLDProvider } from 'launchdarkly-react-client-sdk'
-// Observability plugin class for SDK initialization
 import Observability from '@launchdarkly/observability'
-// Session replay plugin class for SDK initialization  
 import SessionReplay from '@launchdarkly/session-replay'
 import App from './App.jsx'
 import './index.css'
-
-/**
- * LaunchDarkly Observability Demo - Main Entry Point
- * 
- * This application demonstrates how to integrate LaunchDarkly's observability
- * features with a React application. We use asyncWithLDProvider() to initialize
- * the SDK asynchronously with plugins before rendering the app.
- * 
- * Note: The standard React pattern is withLDProvider(), but asyncWithLDProvider()
- * gives us better control over the initialization flow and error handling.
- */
 
 (async () => {
   try {
@@ -29,8 +16,6 @@ import './index.css'
 
     const LDProvider = await asyncWithLDProvider({
       clientSideID,
-      // LaunchDarkly context (identifies the user/entity)
-      // Randomized here for demo purposes. In reality, should be derived from your identity system for consistency.
       context: {
         kind: 'user',
         key: 'user-' + Math.random().toString(36).substr(2, 9),
@@ -39,42 +24,15 @@ import './index.css'
       },
       options: {
         plugins: [
-          /**
-           * Observability Plugin Configuration
-           * Provides error tracking, logging, metrics, and distributed tracing
-           */
           new Observability({
-            // tracingOrigins: Configures distributed tracing headers
-            // - true: Traces ALL outgoing requests
-            // - ['https://api.example.com']: Traces specific domains (RECOMMENDED for production)
-            // - [/regex/]: Use regex patterns for flexible matching
             tracingOrigins: true,
-            
-            // networkRecording: Captures network requests for analysis
             networkRecording: {
               enabled: true,
-              recordHeadersAndBody: true // Includes request/response headers and bodies
+              recordHeadersAndBody: true
             }
-            
-            // Optional: Start manually after user consent
-            // manualStart: true,
-            // Then later: LDObserve.start()
           }),
-          
-          /**
-           * Session Replay Plugin Configuration
-           * Records user sessions for replay and analysis
-           */
           new SessionReplay({
-            // privacySetting options:
-            // - 'none': Records everything (use for demos/internal tools)
-            // - 'default': Redacts text matching PII patterns (RECOMMENDED for most apps)
-            // - 'strict': Redacts all text and images (for sensitive applications)
             privacySetting: 'none'
-            
-            // Optional: Start manually after user consent
-            // manualStart: true,
-            // Then later: LDRecord.start({ forceNew: true })
           })
         ]
       }
