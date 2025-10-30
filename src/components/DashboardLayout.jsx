@@ -70,6 +70,10 @@ function DashboardLayout( { flags } ) {
         </ul>
       </div>
 
+      <ErrorDemo />
+      <LogsDemo />
+      <TracesDemo />
+
       {/* Debug: Flag Status Indicator */}
       <div className="card" style={{ 
         backgroundColor: flags.releaseFancyWidget ? '#e8f5e9' : '#ffebee',
@@ -105,10 +109,6 @@ function DashboardLayout( { flags } ) {
           <FancyWidget />
         </ErrorBoundary>
       )}
-
-      <ErrorDemo />
-      <LogsDemo />
-      <TracesDemo />
 
       <div className="card" style={{ 
         backgroundColor: '#f8f9fa',
