@@ -67,13 +67,13 @@ function TracesDemo() {
         span.setAttribute('step.3.timestamp', new Date().toISOString());
         span.setAttribute('workflow.success', true);
         
-        span.setStatus({ code: 'OK' });
+        span.setStatus({ code: 1 });
         setManualResult(`✓ Completed ${completedSteps}/3 steps!`);
         setManualProgress('');
         
       } catch (error) {
         console.error('Manual span error:', error);
-        span.setStatus({ code: 'ERROR', message: error.message });
+        span.setStatus({ code: 2, message: error.message });
         
         // Record error using the same pattern as ErrorDemo
         LDObserve.recordError(error, 'Multi-step workflow failed', {
